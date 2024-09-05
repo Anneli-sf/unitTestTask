@@ -2,8 +2,24 @@
   "name": "unitestingtask",
   "version": "0.0.1",
   "description": "Unit testing task",
-  "scripts": {},
+  "scripts": {
+    "test": "TZ=UTC jest --coverage"
+  },
   "devDependencies": {
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "mockdate": "^3.0.5"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "json",
+      "html",
+      "text"
+    ],
+    "collectCoverageFrom": [
+      "unitTestingTask.js",
+      "!**/__tests__/**"
+    ]
   }
 }
