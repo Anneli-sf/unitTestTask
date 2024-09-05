@@ -1,0 +1,9 @@
+{
+  "name": "unitestingtask",
+  "version": "0.0.1",
+  "description": "Unit testing task",
+  "scripts": {},
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
