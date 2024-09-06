@@ -24,10 +24,6 @@ describe('format date and time', () => {
         millisecondsDate = new Date(Date.UTC(2024, 7, 11, 15, 2, 3, 23));
     });
 
-    // afterAll(() => {
-    //     mockdate.reset();
-    // });
-
     test('format full year as 4-digit year', () => {
         expect(unitTestingTask('YYYY', date)).toBe('2024');
     });
@@ -134,6 +130,36 @@ describe('format date and time', () => {
     test('return "pm" using meridiem function', () => {
         expect(unitTestingTask('a', datePM)).toBe('pm');
         expect(mockedLanguage.meridiem).toHaveBeenCalledWith(15, true);
+    });
+});
+
+describe('Readied formatting function with one argument — date', () => {
+    beforeAll(() => {
+        unitTestingTask.register('customDate', 'dd/MM/YYYY');
+    });
+
+    test('use register to create custom format', () => {
+        const date = new Date('2024-08-11T15:20:03.123Z');
+        expect(unitTestingTask('customDate', date)).toBe('11/08/2024');
+    });
+});
+
+describe('lang function', () => {
+    beforeAll(() => {
+        unitTestingTask.lang('en', mockedLanguage);
+    });
+
+    test('return the current language', () => {
+        expect(unitTestingTask.lang()).toBe('en');
+    });
+
+    test('change and return new language', () => {
+        unitTestingTask.lang('fr', mockedLanguage);
+        expect(unitTestingTask.lang()).toBe('fr');
+    });
+
+    test('fall back to default language if language not found', () => {
+        expect(unitTestingTask.lang('han')).toBe('en');
     });
 });
 
