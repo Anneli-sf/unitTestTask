@@ -2,7 +2,7 @@
     if (typeof define === 'function' && define.amd) {
         define(['unitTestingTask'], factory);
     } else if (typeof exports === 'object') {
-        module.exports = factory(require('unitTestingTask'));
+        module.exports = factory(require('../unitTestingTask'));
     } else {
         factory(window.unitTestingTask);
     }
@@ -23,7 +23,7 @@
         weekdays: 'нядзеля_панядзелак_аўторак_серада_чацвер_пятніца_субота'.split('_'),
         weekdaysShort: 'ндз_пн_аўт_сер_чц_пт_сб'.split('_'),
         weekdaysMin: 'ндз_пн_аўт_сер_чц_пт_сб'.split('_'),
-        meridiem : function (hour) {
+        meridiem: function (hour) {
             if (hour < 4) {
                 return 'ночы';
             } else if (hour < 12) {

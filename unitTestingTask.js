@@ -167,7 +167,7 @@
      *
      * @return {String}
      */
-    function unitTestingTask (format, date) {
+    function unitTestingTask(format, date) {
         if (!format || typeof format !== 'string') {
             throw new TypeError('Argument `format` must be a string');
         }
@@ -241,7 +241,7 @@
         weekdays: 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_'),
         weekdaysShort: 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_'),
         weekdaysMin: 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_'),
-        meridiem : function (hours, isLower) {
+        meridiem: function (hours, isLower) {
             if (hours > 11) {
                 return isLower ? 'pm' : 'PM';
             } else {
@@ -319,6 +319,8 @@
         root.unitTestingTask = prevDate;
         return this;
     };
+
+    unitTestingTask.leadingZeroes = leadingZeroes;
 
     return unitTestingTask;
 }));
