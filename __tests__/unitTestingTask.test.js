@@ -1,5 +1,4 @@
 const unitTestingTask = require('../unitTestingTask');
-require('../lang/be');
 
 const mockedLanguage = {
     months: jest.fn((date) => 'MockedMonth'),
@@ -21,126 +20,30 @@ beforeEach(() => {
 });
 
 describe('leadingZeroes', () => {
-    test('return number with leading zero in case of simple number', () => {
+    test('returns number with leading zero in case of simple number', () => {
         expect(unitTestingTask.leadingZeroes(5)).toBe('05');
     });
 
-    test('return string if its length more than specified length', () => {
+    test('returns string if its length more than specified length', () => {
         expect(unitTestingTask.leadingZeroes('test', 3)).toBe('test');
     });
 });
 
-describe('format date and time', () => {
-    let date, dateAM, datePM, millisecondsDate;
+describe('formats date and time', () => {
+    let date, dateAM, datePM;
 
     beforeAll(() => {
         date = new Date(Date.UTC(2024, 8, 11, 15, 2, 3));
         dateAM = new Date(Date.UTC(2024, 8, 11, 3, 2, 3));
         datePM = new Date(Date.UTC(2024, 8, 11, 15, 2, 3));
-        millisecondsDate = new Date(Date.UTC(2024, 7, 11, 15, 2, 3, 23));
-        midnight = new Date(Date.UTC(2024, 8, 11, 0, 0, 0));
     });
 
-    test('format full year as 4-digit year', () => {
-        expect(unitTestingTask('YYYY', date)).toBe('2024');
-    });
-
-    test('format short year as last 2 digit of year', () => {
-        expect(unitTestingTask('YY', date)).toBe('24');
-    });
-
-    test('format month as full name of month', () => {
-        expect(unitTestingTask('MMMM', date)).toBe('MockedMonth');
-    });
-
-    test('format month as short name of month', () => {
-        expect(unitTestingTask('MMM', date)).toBe('MockedShortMonth');
-    });
-
-    test('format month with leading zero as the number of month, where January is equal 01', () => {
-        expect(unitTestingTask('MM', date)).toBe('09');
-    });
-
-    test('should format month without leading zero as the number of month, where January is equal 1', () => {
-        expect(unitTestingTask('M', date)).toBe('9');
-    });
-
-    test('format day of week as full name of day', () => {
-        expect(unitTestingTask('DDD', date)).toBe('Wednesday');
-    });
-
-    test('format day of week as short name of day', () => {
-        expect(unitTestingTask('DD', date)).toBe('Wed');
-    });
-
-    test('format day of week as min name of day', () => {
-        expect(unitTestingTask('D', date)).toBe('We');
-    })
-
-    test('format day of month as zero-padded number of day in month', () => {
-        expect(unitTestingTask('dd', date)).toBe('11');
-    });
-
-    test('format day of month as number of day in month', () => {
-        expect(unitTestingTask('d', date)).toBe('11');
-    });
-
-    test('format the hour as zero-padded hour in 24-hr format', () => {
-        expect(unitTestingTask('HH', dateAM)).toBe('03');
-    });
-
-    test('format the hour as hour in 24-hr format', () => {
-        expect(unitTestingTask('H', date)).toBe('15');
-    });
-
-    test('format the hour as zero-padded hour in 12-hr format', () => {
-        expect(unitTestingTask('hh', dateAM)).toBe('03');
-        expect(unitTestingTask('hh', datePM)).toBe('03');
-        expect(unitTestingTask('hh', midnight)).toBe('12');
-    });
-
-    test('format the hour as hour in 12-hr format without zero-padded hour', () => {
-        expect(unitTestingTask('h', dateAM)).toBe('3');
-        expect(unitTestingTask('h', datePM)).toBe('3');
-        expect(unitTestingTask('h', midnight)).toBe('12');
-    });
-
-    test('format the minutes as zero-padded minutes', () => {
-        expect(unitTestingTask('mm', date)).toBe('02');
-    });
-
-    test('format seconds as zero-padded seconds', () => {
-        expect(unitTestingTask('ss', date)).toBe('03');
-    });
-
-    test('format seconds without leading zero', () => {
-        expect(unitTestingTask('s', date)).toBe('3');
-    });
-
-    test('format milliseconds as zero-padded milliseconds', () => {
-        expect(unitTestingTask('ff', millisecondsDate)).toBe('023');
-    });
-
-    test('format milliseconds without leading zero', () => {
-        expect(unitTestingTask('f', millisecondsDate)).toBe('23');
-    });
-
-    test('format date as AM/PM', () => {
-        expect(unitTestingTask('A', dateAM)).toBe('AM');
-        expect(unitTestingTask('A', datePM)).toBe('PM');
-    });
-
-    test('format date as am/pm', () => {
-        expect(unitTestingTask('a', dateAM)).toBe('am');
-        expect(unitTestingTask('a', datePM)).toBe('pm');
-    });
-
-    test('format time-zone in ISO8601-compatible basic format (i.e. "+0400")', () => {
+    test('formats time-zone in ISO8601-compatible basic format (i.e. "+0400")', () => {
         const timeZoneZZ = unitTestingTask('ZZ', date);
         expect(timeZoneZZ).toBe('+0000');
     });
 
-    test('format time-zone ISO8601-compatible extended format (i.e. "-04:00")', () => {
+    test('formats time-zone ISO8601-compatible extended format (i.e. "-04:00")', () => {
         const timeZoneZ = unitTestingTask('Z', date);
         expect(timeZoneZ).toBe('+00:00');
     });
@@ -151,17 +54,17 @@ describe('format date and time', () => {
         expect(formattedDate).toBe('-0530');
     });
 
-    test('return AM using meridiem function', () => {
+    test('returns AM using meridiem function', () => {
         expect(unitTestingTask('A', dateAM)).toBe('AM');
         expect(mockedLanguage.meridiem).toHaveBeenCalledWith(3, false);
     });
 
-    test('return "pm" using meridiem function', () => {
+    test('returns "pm" using meridiem function', () => {
         expect(unitTestingTask('a', datePM)).toBe('pm');
         expect(mockedLanguage.meridiem).toHaveBeenCalledWith(15, true);
     });
 
-    test('throw Error for incorrect date', () => {
+    test('throws Error for incorrect date', () => {
         const incorrectDate = true;
         expect(() => {
             unitTestingTask('YYYY', incorrectDate);
@@ -176,22 +79,63 @@ describe('format date and time', () => {
     });
 });
 
-describe('Readied formatting function with one argument — date', () => {
+describe('formats tokens', () => {
+    const date = new Date('2024-09-11T15:02:03.123Z');
+    const dateAM = new Date('2024-09-11T03:02:03.000Z');
+    const datePM = new Date('2024-09-11T15:02:03.000Z');
+    const millisecondsDate = new Date('2024-09-11T15:02:03.023Z');
+    const midnight = new Date('2024-09-11T00:00:00.000Z');
+
+    test.each([
+        ['YYYY', date, '2024'],
+        ['YY', date, '24'],
+        ['MMMM', date, 'MockedMonth'],
+        ['MMM', date, 'MockedShortMonth'],
+        ['MM', date, '09'],
+        ['M', date, '9',],
+        ['DDD', date, 'Wednesday'],
+        ['DD', date, 'Wed'],
+        ['D', date, 'We'],
+        ['dd', date, '11'],
+        ['d', date, '11'],
+        ['HH', dateAM, '03'],
+        ['H', date, '15'],
+        ['hh', dateAM, '03'],
+        ['hh', datePM, '03'],
+        ['hh', midnight, '12'],
+        ['h', dateAM, '3'],
+        ['h', datePM, '3'],
+        ['h', midnight, '12'],
+        ['mm', date, '02'],
+        ['ss', date, '03'],
+        ['s', date, '3'],
+        ['ff', millisecondsDate, '023'],
+        ['f', millisecondsDate, '23'],
+        ['A', dateAM, 'AM'],
+        ['A', datePM, 'PM'],
+        ['a', dateAM, 'am'],
+        ['a', datePM, 'pm']
+    ])("formats %s according to token's description", (format, date, expected) => {
+        expect(unitTestingTask(format, date)).toBe(expected);
+    });
+})
+
+describe('Readieds formatting function with one argument — date', () => {
     beforeAll(() => {
         unitTestingTask.register('customDate', 'dd/MM/YYYY');
     });
 
-    test('use register to create custom format', () => {
+    test('uses register to create custom format', () => {
         const date = new Date('2024-08-11T15:20:03.123Z');
         expect(unitTestingTask('customDate', date)).toBe('11/08/2024');
     });
 
-    test('handle when date is not provided', () => {
+    test('handles when date is not provided', () => {
         const date = new Date();
         expect(unitTestingTask('YYYY')).toBe(date.getFullYear().toString());
     });
 
-    test('handle when date is not instanceof Date', () => {
+    test('handles when date is not instanceof Date', () => {
         const dateString = '2024-08-11T15:20:03.123Z';
         const formattedDate = unitTestingTask('customDate', dateString);
         expect(formattedDate).toBe('11/08/2024');
@@ -204,11 +148,11 @@ describe('lang function', () => {
         unitTestingTask.lang('en', mockedLanguage);
     });
 
-    test('return the current language', () => {
+    test('returns the current language', () => {
         expect(unitTestingTask.lang()).toBe('en');
     });
 
-    test('change and return new language', () => {
+    test('changes and return new language', () => {
         unitTestingTask.lang('fr', mockedLanguage);
         expect(unitTestingTask.lang()).toBe('fr');
     });
