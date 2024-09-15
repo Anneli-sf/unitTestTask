@@ -6,7 +6,7 @@ const mockedLanguage = {
     weekdays: 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_'),
     weekdaysShort: 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_'),
     weekdaysMin: 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_'),
-    meridiem: jest.fn((hours, isLower) => (isLower ? (hours >= 12 ? 'pm' : 'am') : (hours >= 12 ? 'PM' : 'AM')))
+    meridiem: jest.fn((hours, isLower) => (isLower ? (hours > 11 ? 'pm' : 'am') : (hours > 11 ? 'PM' : 'AM')))
 };
 
 function mockCreateDateWithOffset(offsetMinutes) {
@@ -107,6 +107,7 @@ describe('formats tokens', () => {
         ['h', datePM, '3'],
         ['h', midnight, '12'],
         ['mm', date, '02'],
+        ['m', date, '2'],
         ['ss', date, '03'],
         ['s', date, '3'],
         ['ff', millisecondsDate, '023'],
@@ -120,7 +121,7 @@ describe('formats tokens', () => {
     });
 })
 
-describe('Readieds formatting function with one argument — date', () => {
+describe('Reads formatting function with one argument — date', () => {
     beforeAll(() => {
         unitTestingTask.register('customDate', 'dd/MM/YYYY');
     });
@@ -144,20 +145,21 @@ describe('Readieds formatting function with one argument — date', () => {
 });
 
 describe('lang function', () => {
-    beforeAll(() => {
-        unitTestingTask.lang('en', mockedLanguage);
-    });
 
     test('returns the current language', () => {
         expect(unitTestingTask.lang()).toBe('en');
     });
 
-    test('changes and return new language', () => {
+    test('changes and returns new language', () => {
         unitTestingTask.lang('fr', mockedLanguage);
         expect(unitTestingTask.lang()).toBe('fr');
     });
 
-    test('fall back to default language if language not found', () => {
+    test('returns new language', () => {
+        expect(unitTestingTask.lang('fr')).toBe('fr');
+    });
+
+    test('fallback to default language if language not found', () => {
         expect(unitTestingTask.lang('han')).toBe('en');
     });
 });
